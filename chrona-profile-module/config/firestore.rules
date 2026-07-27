@@ -1,0 +1,31 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // IMPORTANT: Keep this UID in sync with VITE_FIREBASE_ADMIN_UID (exported as
+    // ADMIN_UID in firebase-config.js). Run `npm run check:admin-uid` before
+    // deploying whenever either value changes.
+    // Replace it after you register the developer's first account.
+    function isAdmin() {
+      return request.auth != null && request.auth.uid == "mIW3NMrNQdWrQ5C6jBSKZdpVyZm2";
+    }
+
+    match /ledgers/{uid} {
+      allow read, write: if request.auth != null &&
+        (request.auth.uid == uid || isAdmin());
+    }
+
+    match /usernames/{username} {
+      // Authenticated users can list usernames. The admin dashboard then reads
+      // ledgers through the admin-only branch above.
+      // Username + PIN login must resolve the Firebase email before authentication.
+      // This deliberately exposes the recovery/auth email to username lookup callers.
+      allow read: if true;
+      // Users may create only a lookup document that points at their own UID.
+      // This is a small hardening addition to the requested base rule.
+      allow create: if request.auth != null && request.resource.data.uid == request.auth.uid;
+      allow update: if request.auth != null && request.resource.data.uid == request.auth.uid && resource.data.uid == request.auth.uid;
+      allow delete: if isAdmin();
+    }
+  }
+}
