@@ -1,0 +1,5 @@
+# Example: how to drop this module into any repo
+
+node_modules/
+.env
+*.log

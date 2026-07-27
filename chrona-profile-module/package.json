@@ -1,0 +1,43 @@
+{
+  "name": "chrona-profile-module",
+  "version": "1.0.0",
+  "description": "Reusable Firebase Auth + Profile + Local Security module. Drop into any repo.",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./auth": "./src/auth/index.js",
+    "./security": "./src/security/index.js",
+    "./settings": "./src/settings/index.js",
+    "./lib": "./src/lib/index.js",
+    "./ledger": "./src/ledger/index.js"
+  },
+  "scripts": {
+    "test": "node --test",
+    "check:admin-uid": "node -e \"const { ADMIN_UID } = require('./src/lib/firebase-config.js'); console.log('Admin UID:', ADMIN_UID || 'NOT SET');\""
+  },
+  "keywords": [
+    "firebase",
+    "auth",
+    "profile",
+    "username-login",
+    "local-security",
+    "pin",
+    "reusable-module"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "firebase": "^10.0.0"
+  },
+  "devDependencies": {
+    "firebase": "^10.12.0"
+  },
+  "files": [
+    "src/",
+    "config/",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}
